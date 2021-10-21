@@ -1,0 +1,14 @@
+footer {
+  width: 100%;
+  height: var(--size-footer-height);
+  display: flex;
+  align-items: center;
+  margin-top: 1.875rem;
+  background-color: var(--color-accent);
+}
+
+.footer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
