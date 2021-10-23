@@ -16,14 +16,6 @@
   box-shadow: 5px 5px 15px var(--color-accent);
 }
 
-.product-item:active {
-  box-shadow: none;
-}
-
-.product-item:hover {
-  cursor: pointer;
-}
-
 .new-product {
   width: 100%;
   height: 32px;
@@ -74,4 +66,40 @@
 .cart-btn:hover {
   cursor: pointer;
   background-color: var(--color-yellow);
+}
+
+.home-main {
+  height: calc(
+    100vh - var(--size-header-height) - var(--size-footer-height) - 60px
+  );
+}
+
+#welcome {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.shop-now {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shop-now button {
+  margin-top: 20px;
+  padding: 10px 50px;
+  background-color: var(--color-accent);
+  border-radius: 5px;
+}
+
+.shop-now button:hover {
+  cursor: pointer;
+  background-color: var(--color-yellow);
+}
+
+.shop-now-link {
+  text-decoration: none;
+  color: var(--color-font);
+  font-weight: bold;
 }
