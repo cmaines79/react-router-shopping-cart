@@ -1,0 +1,24 @@
+#cart-wrapper {
+  display: flex;
+}
+
+.cart-item {
+  display: flex;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-pricing {
+  display: flex;
+}
+
+.cart-item-pricing p {
+  margin: 0 2px;
+}
+
+img {
+  width: 100px;
+}

@@ -1,5 +1,5 @@
 // importing dependancies
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { MdFiberNew } from 'react-icons/md'
 
@@ -26,6 +26,8 @@ const pushToCart = (id) => {
         "rating": {"rate": a[0].rating.rate, "count": a[0].rating.count},
         "isFeatured": a[0].isFeaturedProduct,
         "isNew": a[0].isNewProduct,
+        "quantity": a[0].quantity,
+        "extendedPrice": a[0].price * a[0].quantity,
     }
 
     updateCart(newCartItem);

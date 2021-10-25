@@ -295,6 +295,8 @@ function App() {
               "rating": {"rate": a[i].rating.rate, "count": a[i].rating.count},
               "isFeatured": isFeaturedProduct(i),
               "isNew": isNewProduct(i),
+              "quantity": 1,
+              "extendedPrice": a[i].price,
           };
           tempProducts.push(newProduct);
       }
@@ -309,6 +311,18 @@ function App() {
 
   const updateCartCounter = () => {
     setCartCount(cart.length);
+  }
+
+  const updateCartQuantity = (id, value) => {
+    let tempCart = cart;
+    // take in an array[id] & plus or minus
+    for(let i = 0; i < tempCart.length; i++){
+      if(tempCart[i].id == id){
+        tempCart[i].quantity = value;
+        tempCart[i].extendedPrice = (tempCart[i].quantity * tempCart[i].price).toFixed(2);
+      }
+    }
+    setCart(tempCart);
   }
 
   useEffect(() => {
@@ -328,7 +342,7 @@ function App() {
           <Switch>
               {/* <Route exact path="/product/:id" component={Product} /> */}
               <Route exact path="/cart">
-                <Cart cartItems={cart} cartCount={cartCount}/>
+                <Cart cartItems={cart} cartCount={cartCount} updateCartQuantity={updateCartQuantity}/>
               </Route>
               <Route exact path="/products">
                 <Products products={products} updateCart={updateCart} cartCount={cartCount} />
