@@ -1,79 +1,45 @@
 // importing dependancies
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { MdFiberNew } from 'react-icons/md'
-import axios from 'axios';
 
 // importing components and stylesheets
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import './Products.css';
 
-const Products = () => {
+const Products = ({ products, updateCart, cartCount }) => {
 
 // TODOs
-    // update the location of the loading spinner
     // include filters!
-    // add to cart button
+    
+const pushToCart = (id) => {
+    let a = products.filter((product) => product.id == id);
 
-// variables
-const baseAPIURL = 'https://fakestoreapi.com/';
-  
-// states
-const [products, setProducts] = useState([]);
-
-// supporting functions
-const numberToFixed = (a) => {
-    return(a.toFixed(2));
-}
-
-const isNewProduct = (i) => {
-    // And a few new items
-    if (i === 0 || i === 4 || i === 7 || i === 10 || i === 13 || i === 19) {
-        return true;
-    }
-}
-
-const isFeaturedProduct = (i) => {
-    // also want to highlight a few featured items
-    if (i === 2 || i === 5 || i === 8 || i === 11 || i === 15 || i === 18) {
-        return  true;
-    }
-}
-
-const organizeProducts = (a) => {
-    let products = [];
-
-    // pushing api json into a new object to format the price and add isFeatured and isNew
-    for(let i = 0; i < a.length; i++) {
-        let newProduct = {
-            "id": a[i].id,
-            "title": a[i].title,
-            "price": numberToFixed(a[i].price), // 
-            "description": a[i].description,
-            "category": a[i].category,
-            "image": a[i].image,
-            "rating": {"rate": a[i].rating.rate, "count": a[i].rating.count},
-            "isFeatured": isFeaturedProduct(i),
-            "isNew": isNewProduct(i),
-        };
-        products.push(newProduct);
+    let newCartItem = {
+        "id": a[0].id,
+        "title": a[0].title,
+        "price": a[0].price, 
+        "description": a[0].description,
+        "category": a[0].category,
+        "image": a[0].image,
+        "rating": {"rate": a[0].rating.rate, "count": a[0].rating.count},
+        "isFeatured": a[0].isFeaturedProduct,
+        "isNew": a[0].isNewProduct,
+        "quantity": a[0].quantity,
+        "extendedPrice": a[0].price * a[0].quantity,
     }
 
-    setProducts(products);
+    updateCart(newCartItem);
 }
 
 useEffect(() => {
-    // calling fakestoreapi
-    axios.get(`${baseAPIURL}products`)
-    .then ((res) => {           
-        const response = res.data;
-        organizeProducts(response);
-    })
+    // keeping the cart item counter accurate
+    let cartEl = document.getElementById('shopping-cart');
+    cartEl.innerText = `Cart(${cartCount})`; 
 
-    // udpating the title of the webpage
+     // udpating the title of the webpage
     document.title = "High Peaks Supply | Home"
-
 }, [])
 
 return (
@@ -102,7 +68,7 @@ return (
                             <div className="item-description">
                                 <p>{product.description}</p>
                             </div>
-                            <button className="cart-btn">Add to Cart</button>
+                            <button id={product.id} className="cart-btn" onClick={(e) => pushToCart(e.target.id)}>Add to Cart</button>
                         </div>
                     )
                 })}

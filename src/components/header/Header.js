@@ -1,7 +1,6 @@
 // importing stylesheets and assests
 import logo from '../../img/logo.svg';
 import { NavLink } from 'react-router-dom';
-
 import './Header.css';
 
 const Header = () => {
@@ -19,6 +18,7 @@ const Header = () => {
                     <ul>
                         <li><NavLink exact activeClassName="active-link" className="links"  to="/">Home</NavLink></li>
                         <li><NavLink exact activeClassName="active-link" className="links"  to="/products">Products</NavLink></li>
+                        <li><NavLink exact activeClassName="active-link" className="links"  to="/cart" id="shopping-cart">Cart (0)</NavLink></li>
                     </ul>
                 </div>
             </div>
