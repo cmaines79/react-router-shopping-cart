@@ -4,16 +4,15 @@ import Footer from '../footer/Footer';
 import { useState, useEffect } from 'react';
 import './Cart.css';
 
-const Cart = ({ cartItems, cartCount, updateCartQuantity }) => {
+const Cart = ({ cartItems, cartCount, updateCartQuantity, removeItemFromCart }) => {
     // TODOs
-        // empty/delete cart 
-        // clear an item  
-        // play animation or show an image or show text on empty cart
-        // need a function (useEffect?) to total the entire cart
 
     // states
     const [orderTotal, setOrderTotal] = useState(0);
 
+    // variables
+    const isProductsInCart = cartItems.length > 0;
+    
 
     // supporting functions
     const cartQuantityChangeHandler = (e, value) => {
@@ -32,8 +31,8 @@ const Cart = ({ cartItems, cartCount, updateCartQuantity }) => {
     }
 
     const updateLineTotal = (e) => {
-        let extendedPriceEl = e.nextElementSibling.nextElementSibling;
-        let amount;
+        let extendedPriceEl = e.nextElementSibling.children[1];
+        let amount = 0;
 
         for(let i = 0; i < cartItems.length; i++){
             if(cartItems[i].id == e.id){
@@ -67,19 +66,26 @@ const Cart = ({ cartItems, cartCount, updateCartQuantity }) => {
     const decreaseQuantity = (e) => {
         // get the right element
         let targetPEl = document.getElementById(e.id).children[1];
+        console.log(targetPEl);
 
-        // get the value of the element and add one
-        let targetPElValue = parseInt(targetPEl.innerText) - 1;
+        if(parseInt(targetPEl.innerText) >= 1) {
+            // get the value of the element and add one
+            let targetPElValue = parseInt(targetPEl.innerText) - 1;
 
-        // update the element
-        targetPEl.innerText = targetPElValue;
+            // update the element
+            targetPEl.innerText = targetPElValue;
 
-        // call the function
-        cartQuantityChangeHandler(e, targetPElValue);
+            // call the function
+            cartQuantityChangeHandler(e, targetPElValue);
 
-        // update line item total
-        updateLineTotal(e);
+            // update line item total
+            updateLineTotal(e);
+        } // else remove item
     } 
+
+    const removeItem = (e)  => {
+        removeItemFromCart(e);
+    }
 
     useEffect(() => {
         // keeping cart count accurate
@@ -94,6 +100,10 @@ const Cart = ({ cartItems, cartCount, updateCartQuantity }) => {
         
     }, [])
 
+    useEffect(() => {
+        updateOrderTotal();
+    })
+
      return (
         <div>
             <Header />
@@ -105,25 +115,31 @@ const Cart = ({ cartItems, cartCount, updateCartQuantity }) => {
                                 <img src={item.image} alt="item.title" />
                             </div>
                             <div className="cart-item-details">
-                                <div><h5>{item.title}</h5></div>
+                                <div><h3>{item.title}</h3></div>
                                 <div className="cart-item-pricing">
                                     <p>Each: ${item.price}</p>
-                                    <div id={item.id}>
-                                        <button onClick={(e) => decreaseQuantity(e.target.parentElement)}>-</button>
+                                    <div id={item.id} className="item-details">
+                                        <button className="increment" onClick={(e) => decreaseQuantity(e.target.parentElement)}>-</button>
                                         <p>{item.quantity}</p>
-                                        <button onClick={(e) => increaseQuantity(e.target.parentElement)}>+</button>
+                                        <button className="increment" onClick={(e) => increaseQuantity(e.target.parentElement)}>+</button>
                                     </div>
-                                    <p>Total: $</p> <p>{item.extendedPrice}</p>
+                                    <div id="line-total">
+                                        <p>Total: $</p> <p>{item.extendedPrice}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button>Remove Item</button>
+                                <div className="button-control">
+                                    <button id="remove-item" onClick={(e) => removeItem(e.target.parentElement.previousSibling.children[1].id)}>Remove Item</button>
                                 </div>
                             </div>
                         </div>
                     )
                 })}
-                <div>
-                    <h5 id="order-total">$ {orderTotal}</h5>
+                <div className="order-total-div">
+                    {isProductsInCart ? (
+                    <h2 id="order-total">Order Total: ${orderTotal}</h2>
+                    ) : (
+                        <h2>Your cart is empty</h2>
+                    )}
                 </div>
             </div>
             <Footer />

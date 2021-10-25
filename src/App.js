@@ -325,6 +325,12 @@ function App() {
     setCart(tempCart);
   }
 
+  const removeItemFromCart = (id) => {
+    let a = cart.filter((item) => item.id != id);
+
+    setCart(a);
+  }
+
   useEffect(() => {
     organizeProducts(products);
   },[])
@@ -342,7 +348,7 @@ function App() {
           <Switch>
               {/* <Route exact path="/product/:id" component={Product} /> */}
               <Route exact path="/cart">
-                <Cart cartItems={cart} cartCount={cartCount} updateCartQuantity={updateCartQuantity}/>
+                <Cart cartItems={cart} removeItemFromCart={removeItemFromCart} cartCount={cartCount} updateCartQuantity={updateCartQuantity}/>
               </Route>
               <Route exact path="/products">
                 <Products products={products} updateCart={updateCart} cartCount={cartCount} />
